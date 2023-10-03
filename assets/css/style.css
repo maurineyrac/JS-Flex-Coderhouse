@@ -1,0 +1,304 @@
+body {
+  min-width: 280px;
+
+}
+
+.cont-btt {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  z-index: 2000;
+}
+
+.envol-btt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  color: rgb(71, 160, 243);
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.253);
+  opacity: 0;
+  visibility: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.46, 0.03, 0.52, 0.96);
+}
+
+.customshow {
+  opacity: 1;
+  visibility: visible;
+}
+
+.navbar-brand {
+  color: var(--bs-navbar-color);
+  font-size: 25px;
+}
+
+.navbar {
+  background: rgb(255, 255, 255);
+  /** BOOTSTRAP CSS CUSTOM VARIABLES PARA NAVBAR**/
+  --bs-navbar-color: rgb(71, 160, 243);
+  --bs-emphasis-color-rgb: 71, 88, 243;
+  --bs-navbar-hover-color: rgba(var(--bs-emphasis-color-rgb), 0.8);
+}
+
+.navbar-toggler {
+  border: 0px;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler:hover {
+  color: var(--bs-navbar-hover-color);
+}
+
+.tuto {
+  background: linear-gradient(-180deg, rgb(209 186 186 / 54%) 0%, rgb(189 169 225 / 57%) 96%), url(../img/backgroundweb.png) center/cover no-repeat;
+  padding: 80px 0;
+}
+
+.cont-tuto,
+.cont-categ {
+  font-weight: 500;
+  margin: 0px auto;
+  width: 100%;
+  padding-right: 20px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 458px) {
+
+  .cont-tuto,
+  .cont-categ {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+
+  .cont-tuto,
+  .cont-categ {
+    width: 90%;
+    padding: 0;
+    max-width: 1200px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+
+  .cont-tuto,
+  .cont-categ {
+    width: 95%;
+    max-width: 1600px;
+  }
+}
+
+.tuto-txt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0px;
+}
+
+.h2-tuto {
+  margin-bottom: 0px;
+  font-weight: 700;
+  font-size: 2.125rem;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  width: 100%;
+}
+
+.p-tuto {
+  word-break: break-word;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: rgb(13, 232, 243);
+  text-align: center;
+  width: 100%;
+  padding-top: 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.356);
+}
+
+.h2-tuto {
+  color: rgb(120, 9, 175);
+}
+
+.p-tuto {
+  color: rgb(82, 84, 147);
+  color: white;
+}
+
+.form-floating>label {
+  font-size: 0.8rem;
+  color: darkgrey;
+}
+
+.cbut {
+
+  padding: 0 40px;
+  height: 50px;
+  line-height: 50px;
+  font-weight: 500;
+  color: rgb(255, 255, 255);
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  text-align: center;
+  display: block;
+  box-shadow: 0px 2px 6px 0px rgba(32, 32, 32, 0.733);
+  background: linear-gradient(-180deg, rgb(132, 103, 235) 0%, rgb(109, 36, 244) 96%);
+  border: 0;
+}
+
+.cbut:hover {
+  background: linear-gradient(-180deg, rgba(152, 130, 231, 0.644) 0%, rgba(115, 51, 235, 0.568) 96%);
+  color: white;
+  border: 0;
+}
+
+.card-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: -10px auto 0px;
+  padding-top: 40px;
+  width: 100%;
+}
+
+@media screen and (min-width: 992px) {
+  .card-wrap {
+    padding-top: 50px;
+  }
+}
+
+.customcard {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 210px;
+  height: 210px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(5px);
+}
+
+.cardhover:hover {
+  transform: scale(1.055);
+}
+
+@media screen and (min-width: 668px) {
+  .customcard {
+    width: 45%;
+  }
+
+  .cardhover:hover {
+    transform: scale(1.125);
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .customcard {
+    max-width: 480px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .customcard {
+    max-width: 410px;
+  }
+}
+
+.card-filter {
+  position: absolute;
+  top: 0;
+  min-width: 210px;
+  min-height: 290px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(5px);
+  width: 100%;
+
+}
+
+.cont-cardtxt {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  padding: 20px;
+  min-height: 210px;
+  width: 100%;
+}
+
+.p-card {
+  margin: 0;
+}
+
+.p-cardsmall {
+  font-size: 0.8em;
+  margin-bottom: 0;
+}
+
+.cont1 {
+  padding: 80px 0;
+  background:
+    url(https://source.unsplash.com/E8Ufcyxz514/2400x1823) center / cover no-repeat fixed;
+}
+
+.customcard2 {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 350px;
+  min-height: 290px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.minheight {
+  min-height: 290px;
+  padding: 10px 10px 10px 110px;
+  justify-content: space-evenly;
+  font-size: 0.95rem;
+}
+
+.cardimg {
+  border-radius: 20px 0 0 20px;
+  width: 100px;
+  height: 290px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(-180deg, rgb(108 108 247 / 39%) 0%, rgb(255 159 252 / 65%) 96%);
+  font-size: 100px;
+  z-index: 1001;
+  overflow: hidden;
+  justify-content: flex-start;
+  padding-left: 10px;
+  color: rgba(0, 0, 0, 0.747);
+}
