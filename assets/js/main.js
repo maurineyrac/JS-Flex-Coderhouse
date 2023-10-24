@@ -1,8 +1,10 @@
+let flag
+
 /* ======= BACK TO TOP SCRIPT =======  */
 function backToTop() {
   const mybutton = document.getElementById("envol-btt");
 
-  window.onscroll = function () {
+  window.onscroll = () => {
     scrollFunction();
   };
 
@@ -17,9 +19,9 @@ function backToTop() {
     }
   }
 
-  mybutton.addEventListener("click", backToTop);
+  mybutton.addEventListener("click", backToTopL);
 
-  function backToTop() {
+  function backToTopL() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }
@@ -61,59 +63,19 @@ function validarNombreProducto(nombre) {
   return (nombre == null || nombre == "" || !isNaN(nombre));
 }
 
-// Función para validar los valores numéricos
-function validarValoresNumericos(unidades, costo, margen) {
-  return (
-    (
-      isNaN(unidades) ||
-      unidades <= 0 ||
-      isNaN(costo) ||
-      costo <= 0 ||
-      isNaN(margen) ||
-      margen < 0 ||
-      margen > 99
-    )
-  );
-}
-
-// Función para limpiar las cards existentes y que no se repitan
-function limpiarCards() {
-  const wraper = document.getElementById("cardwrap");
-  while (wraper.firstChild) {
-    wraper.removeChild(wraper.firstChild);
-  }
-}
-
-// Función para mostrar una notificación
-function mostrarNotificacion(titulo, mensaje, tipo) {
-  Swal.fire(titulo, mensaje, tipo);
-}
-
-// Funcion que verifica y guarda los datos en el localStorage, es llamada luego en validaryGuardar();
-function guardarEnLocalStorage(nombreProducto, costU, formulaPv, unidadesProducidas, margenSobrePv, formulaRent) {
-  const datosGuardados = JSON.parse(localStorage.getItem("datos")) || [];
-  const productoExistente = datosGuardados.find((item) => item.Nombre === nombreProducto);
-
-  if (!productoExistente) {
-    const nuevoproducto = {
-      Nombre: nombreProducto,
-      Costo: costU,
-      Precio: formulaPv,
-      Stock: unidadesProducidas,
-      Utilidad: margenSobrePv,
-      Rentabilidad: formulaRent,
+// Funciones para validar los valores numéricos
+function validarValoresNumericos(...valores) {
+  let valorinvalido = false
+  for (const valor of valores) {
+    if (isNaN(valor) || valor <= 0) {
+      valorinvalido = true
     }
-    datosGuardados.push(nuevoproducto);
-    localStorage.setItem("datos", JSON.stringify(datosGuardados));
-
-    mostrarNotificacion('Bien!', `El producto ${nuevoproducto.Nombre} se agregó correctamente.`, 'success');
-    const formid = document.getElementById('form1')
-    formid.reset()
-  } else {
-    mostrarNotificacion('Error', `El producto ${nombreProducto} ya existe.`, 'error');
   }
+  return valorinvalido
 }
-
+function validarMargen(margenSobrePv) {
+  return (isNaN(margenSobrePv) || margenSobrePv < 1 || margenSobrePv > 99)
+}
 // Funcion para crear y agregar cards
 function crearCard(producto) {
   const wraper = document.getElementById("cardwrap");
@@ -130,10 +92,10 @@ function crearCard(producto) {
     <strong>Nombre:</strong> ${producto.Nombre}
     </p>
     <p class="p-card">
-    <strong>Costo:</strong> ${producto.Costo}
-  </p>
+    <strong>Costo:</strong> $ ${producto.Costo}
+    </p>
     <p class="p-card">
-    <strong> Precio:</strong> ${producto.Precio}
+    <strong> Precio:</strong> $ ${producto.Precio}
     </p>
     <p class="p-card">
     <strong> Stock:</strong> ${producto.Stock}
@@ -148,22 +110,148 @@ function crearCard(producto) {
 
   wraper.appendChild(contcard);
 }
-// Funcion que valida y realiza los calculos correspondientes, guarda todos los datos especificados en LS con la funcion guardarEnLocalStorage();
-function validaryGuardar(e) {
-  e.preventDefault();
-
-  const nombreProducto = document.getElementById("input1").value.toLowerCase();
-  const unidadesProducidas = parseInt(document.getElementById("input2").value);
-  const costoTotal = parseFloat(document.getElementById("input3").value);
-  const margenSobrePv = parseFloat(document.getElementById("input4").value);
-
-  if (validarNombreProducto(nombreProducto)) {
-    mostrarNotificacion("Error", "Ingrese un nombre válido.", "error");
+// Función para limpiar las cards existentes y que no se repitan
+function limpiarCards() {
+  const wraper = document.getElementById("cardwrap");
+  while (wraper.firstChild) {
+    wraper.removeChild(wraper.firstChild);
   }
-  else if (validarValoresNumericos(unidadesProducidas, costoTotal, margenSobrePv)) {
-    mostrarNotificacion("Error", "Ingrese valores válidos.", "error");
+}
+
+// Función para mostrar una notificación personalizada con el parametro class1
+function mostrarNotificacion(titulo, mensaje, error, class1) {
+  Swal.fire({ title: titulo, text: mensaje, icon: error, customClass: { confirmButton: class1 }, buttonsStyling: false });
+}
+
+// Funcion que verifica y guarda los datos en el localStorage, es llamada luego en validaryGuardar();
+function guardarEnLocalStorage(nombreProducto, costU, formulaPv, unidadesProducidas, margenSobrePv, formulaRent) {
+  const datosGuardados = JSON.parse(localStorage.getItem("datos")) || [];
+  const productoExistente = datosGuardados.find((item) => item.Nombre === nombreProducto);
+
+  if (!productoExistente) {
+    const nuevoproducto = {
+      Nombre: nombreProducto,
+      Costo: costU,
+      Precio: formulaPv,
+      Stock: unidadesProducidas,
+      Utilidad: margenSobrePv,
+      Rentabilidad: formulaRent
+    }
+    datosGuardados.push(nuevoproducto);
+    localStorage.setItem("datos", JSON.stringify(datosGuardados));
+
+    mostrarNotificacion('Bien!', `El producto ${nuevoproducto.Nombre} se agregó correctamente.`, 'success', 'cbut');
+    for (let i = 0; i <= 2; i++) {
+      const inputElement = document.getElementById(`input${i}`);
+      inputElement.value = ''
+    }
+
   } else {
-    const costU = redondearNumero(costoTotal / unidadesProducidas);
+    mostrarNotificacion('Error', `El producto ${nombreProducto} ya existe.`, 'error', 'cbut');
+  }
+}
+
+// Funcion para guardar los datos en el localStorage, es llamada luego en cargarDatosInic();
+function guardarDatostotEnLs(unidadestot, costomp, costomod, costofijo) {
+  const datosGuardadosTot = JSON.parse(localStorage.getItem("datostot")) || [];
+  const datosInputs = {
+    unidadestot: unidadestot,
+    costompt: costomp,
+    costomodt: costomod,
+    costofijot: costofijo
+  }
+
+  datosGuardadosTot.push(datosInputs);
+  localStorage.setItem("datostot", JSON.stringify(datosGuardadosTot));
+
+  mostrarNotificacion('Bien!', `Los datos totales fueron guardados correctamente`, 'success', 'cbut');
+
+  for (let i = 3; i <= 6; i++) {
+    const inputElement = document.getElementById(`input${i}`);
+    inputElement.disabled = true;
+    inputElement.classList.add('disabled');
+  }
+  flag = true;
+}
+
+function mostrarDatosTot() {
+  const datosGuardadosTot = JSON.parse(localStorage.getItem("datostot")) || [];
+
+  // Creo un objeto para asociar id de input con la propiedad del objeto datosGuardadosTot
+  const asocioIdyProp = {
+    input3: "unidadestot",
+    input4: "costompt",
+    input5: "costomodt",
+    input6: "costofijot"
+  };
+
+  flag = false
+  // Verifico si hay datos en el localstorage
+  if (datosGuardadosTot.length > 0) {
+    flag = true
+    const primerObjeto = datosGuardadosTot[0];
+    // Itero a traves de los elementos de entrada y asigno valores de manera dinamica
+    for (let inputId in asocioIdyProp) {
+      const inputElement = document.getElementById(inputId);
+      const propiedad = asocioIdyProp[inputId];
+      inputElement.value = primerObjeto[propiedad];
+    }
+    // Si datosGuardadosTot ya fue cargado desabilito los inputs y le asigno un estilo
+    for (let i = 3; i <= 6; i++) {
+      const inputElement = document.getElementById(`input${i}`);
+      inputElement.disabled = true;
+      inputElement.classList.add('disabled');
+    }
+
+  }
+
+}
+// Funcion que valida y guarda los datos cargados totales en el localstorage
+function cargaDatosInic(e) {
+  e.preventDefault();
+  if (flag) {
+    mostrarNotificacion("Error", "Datos ya cargados", "error", 'cbut');
+    return;
+  }
+
+  const unidadesProducidasTot = parseInt(document.getElementById("input3").value);
+  const costoMP = parseFloat(document.getElementById("input4").value);
+  const costoMOD = parseFloat(document.getElementById("input5").value);
+  const costoFijo = parseFloat(document.getElementById("input6").value);
+
+  if (validarValoresNumericos(unidadesProducidasTot, costoMP, costoMOD, costoFijo)) {
+    mostrarNotificacion("Error", "Ingrese valores válidos.", "error", 'cbut');
+  } else {
+    guardarDatostotEnLs(unidadesProducidasTot, costoMP, costoMOD, costoFijo);
+
+  }
+
+}
+// Funcion que valida y realiza los calculos correspondientes, guarda todos los datos especificados para las cards en LS con la funcion guardarEnLocalStorage();
+function validaryGuardar(e) {
+  const datosGuardadosTot = JSON.parse(localStorage.getItem("datostot")) || [];
+  e.preventDefault();
+  // Verifico si los datos totales fueron cargados primero
+  if (!flag) {
+    mostrarNotificacion("Error", "Cargue primero datos totales", "error", 'cbut');
+    return;
+  }
+  // Carga de datos por el usuario
+  const nombreProducto = document.getElementById("input0").value.toLowerCase();
+  const unidadesProducidas = parseInt(document.getElementById("input1").value);
+  const margenSobrePv = parseFloat(document.getElementById("input2").value);
+  // Valido datos y realizo los calculos, los guardo en LS con la funcion guardarEnLocalStorage()
+  if (validarNombreProducto(nombreProducto) || validarValoresNumericos(unidadesProducidas) || validarMargen(margenSobrePv)) {
+    mostrarNotificacion("Error", "Ingrese un nombre válido y/o valores entre 1 y 99", "error", 'cbut');
+  }
+  else {
+    const data = datosGuardadosTot[0]
+    const costoMPe = redondearNumero((data.costompt / data.unidadestot) * unidadesProducidas)
+    const costoMODe = redondearNumero((data.costomodt / data.unidadestot) * unidadesProducidas);
+    const costoFijoe = redondearNumero((data.costofijot / data.unidadestot) * unidadesProducidas);
+    const costoTotale = redondearNumero((costoMPe + costoMODe + costoFijoe))
+
+    const costU = redondearNumero(costoTotale / unidadesProducidas);
     const formulaPv = redondearNumero(costU / (1 - margenSobrePv / 100));
     const formulaRent = redondearNumero(((formulaPv - costU) / costU) * 100);
     guardarEnLocalStorage(nombreProducto, costU, formulaPv, unidadesProducidas, margenSobrePv, formulaRent);
@@ -171,40 +259,81 @@ function validaryGuardar(e) {
 }
 
 
-// Funcion para cargar datos del localStorage
-function cargarDatosLs() {
+// Funcion para crear y mostrar cards con datos de localstorage
+function mostrarCardsLs() {
   const datosGuardados = JSON.parse(localStorage.getItem("datos")) || [];
   // Primero limpio las card existentes
   limpiarCards();
-  // Luego genero una card por cada elemento guardado en el LS
+  // Luego genero una card por cada elemento guardado en el localstorage
   datosGuardados.forEach((producto) => {
     crearCard(producto);
   });
 }
 
-// Funcion para borrar el localStorage
-function borrarDatosLs(e) {
-  (e).preventDefault();
-  localStorage.removeItem("datos");
-  mostrarNotificacion('Hecho', 'Datos borrados exitosamente', 'success');
+// Funciones para borrar los datos de las cards de localstorage
+function borrarDatosCardsLs(e) {
+  e.preventDefault();
+  const datosGuardados = JSON.parse(localStorage.getItem("datos")) || [];
+  if (datosGuardados.length > 0) {
+    localStorage.removeItem("datos");
+    limpiarCards();
+
+    mostrarNotificacion('Hecho', 'Cards borradas exitosamente', 'success', 'cbut');
+  } else {
+    mostrarNotificacion('Error', 'No hay datos locales', 'error', 'cbut');
+  }
+}
+// Funcion para borrar los datos totales de localstorage
+function borrarDatosTotLs() {
+  localStorage.removeItem("datostot");
+  for (let i = 3; i <= 6; i++) {
+    const inputElement = document.getElementById(`input${i}`);
+    inputElement.disabled = false;
+    inputElement.classList.remove('disabled');
+    inputElement.value = '';
+  }
+  flag = false;
+}
+// Funcion que se ejecuta con un boton, permite la opcion de borrar o cancelar
+function borrarDatosSwal(e) {
+  e.preventDefault();
+  const datosGuardadosTot = JSON.parse(localStorage.getItem("datostot")) || [];
+
+  if (datosGuardadosTot.length > 0) {
+    Swal.fire({
+      title: 'Borrar todos los datos?',
+      text: "Tendras que cargar nuevos datos totales",
+      icon: 'warning',
+      showCancelButton: true,
+      buttonsStyling: false,
+      customClass: {
+        confirmButton: 'cbut me-2',
+        cancelButton: 'cbutred ms-2'
+      },
+      confirmButtonText: 'Si, borrar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        borrarDatosTotLs();
+        mostrarNotificacion('Hecho', 'Datos borrados con exito', 'success', 'cbut')
+      }
+    });
+  } else {
+    mostrarNotificacion('Error', 'No hay datos locales', 'error', 'cbut');
+  }
 }
 
-// Llamo a esta funcion al cargar la página para mostrar las cards existentes
-cargarDatosLs();
+// Llamo a estas funciones al cargar la página para mostrar las cards y datos existentes
+mostrarDatosTot();
+mostrarCardsLs();
 
-// Agrego un evento click al boton guardarBoton
+// Agrego un evento click a botones
+document.getElementById('guardarBoton1').addEventListener('click', cargaDatosInic);
+
 document.getElementById('guardarBoton').addEventListener('click', validaryGuardar);
-document.getElementById('guardarBoton').addEventListener('click', cargarDatosLs);
+document.getElementById('guardarBoton').addEventListener('click', mostrarCardsLs);
 
-// Agregar un evento click al botón de borrarLS
-document.getElementById("borrarLS").addEventListener("click", borrarDatosLs);
-document.getElementById("borrarLS").addEventListener("click", limpiarCards);
+document.getElementById("borrarCards").addEventListener("click", borrarDatosCardsLs);
+document.getElementById('borrardatos').addEventListener('click', borrarDatosSwal);
 
-
-
-
-
-
-
-
+//TODO - SOLO FALTA AGREGAR UNA PETICION FETCH SIMULANDO UNA BASE DE DATOS 
 

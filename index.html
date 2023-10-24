@@ -23,7 +23,7 @@
   <!-- NAVBAR -->
   <header>
     <nav class="navbar navbar-expand-lg fixed-top" id="navbar">
-      <div class="container-fluid">
+      <div class="container">
         <a class="navbar-brand" href="#"><i class="fa-solid fa-calculator"></i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
                 Presionar el boton "Cargar Datos"
               </p>
               <p class="p-cardsmall">
-              *El boton 'Borrar datos' eliminara todos los productos cargados.
+                *Los botones de "borrado" eliminaran  todos los datos almacenados
               </p>
             </div>
           </div>
@@ -76,28 +76,50 @@
     </section>
     <section class="cont1" id="calculadora">
       <div class="cont-categ" id="cont-categ">
-        <form class="inputs d-flex flex-column " id="form1">
+        <form class="inputs d-flex flex-column text-center" id="form1">
+          <h2 class="customh2 mb-3">Ingrese datos totales de produccion</h2>
           <div class="inputs d-flex flex-wrap justify-content-evenly mb-3">
+            <!-- PRIMER BLOQUE INPUTS -->
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="input1" placeholder="nombreproducto">
+              <input type="text" class="form-control" id="input3" placeholder="Unidades Producidas Totales">
+              <label for="input5">Unidades Producidas totales</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="input4" placeholder="Costo MP">
+              <label for="input3">Costo MP total</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="input5" placeholder="Costo MOD">
+              <label for="input3">Costo MOD total</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="input6" placeholder="Costo Fijo">
+              <label for="input3">Costo Fijo total</label>
+            </div>
+          </div>
+          <div class="cont-botones d-flex flex-column flex-lg-row justify-content-center mb-3">
+            <button class="cbut col-12 col-lg-3 me-lg-3" id="guardarBoton1">Cargar Datos totales</button>
+            <button class="cbut col-12 col-lg-3 mt-3 mt-lg-0 " id="borrardatos">Borrar datos totales</button>
+          </div>
+          <h2 class="customh2 mb-3">Ingrese datos de cada producto</h2>
+          <div class="inputs d-flex flex-wrap justify-content-evenly mt-3 mb-3">
+            <!-- SEGUNDO BLOQUE INPUTS -->
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="input0" placeholder="">
               <label for="input1">Nombre del producto</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="input2" placeholder="Unidades Producidas">
-              <label for="input2">Unidades Producidas</label>
+              <input type="text" class="form-control" id="input1" placeholder="Unidades Producidas">
+              <label for="input2">Unidades por modelo</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="input3" placeholder="Costo Total">
-              <label for="input3">Costo Total</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="input4" placeholder="Utilidad deseada (%)">
+              <input type="text" class="form-control" id="input2" placeholder="Utilidad deseada (%)">
               <label for="input4">Utilidad deseada (%)</label>
             </div>
           </div>
-          <div class="cont-botones d-flex flex-column flex-lg-row justify-content-center">
-            <button class="cbut col-12 col-lg-3 me-lg-3" id="guardarBoton">Cargar Datos</button>
-            <button class="cbut col-12 col-lg-3 mt-3 mt-lg-0 " id="borrarLS">Borrar datos</button>
+          <div class="cont-botones d-flex flex-column flex-lg-row justify-content-center mb-3">
+            <button class="cbut col-12 col-lg-3 me-lg-3" id="guardarBoton">Cargar Datos especificos</button>
+            <button class="cbut col-12 col-lg-3 mt-3 mt-lg-0 " id="borrarCards">Borrar cards</button>
           </div>
         </form>
       </div>
@@ -112,6 +134,7 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.31/dist/sweetalert2.all.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script src="./assets/js/main.js"></script>
 </body>
 
