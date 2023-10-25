@@ -1,0 +1,37 @@
+[
+	{
+		"id": 1,
+		"nombre": "pantalon",
+		"img": "./assets/img/pantalon.png"
+	},
+	{
+		"id": 2,
+		"nombre": "remera",
+		"img": "./assets/img/remera.png"
+	},
+	{
+		"id": 3,
+		"nombre": "camisa",
+		"img": "./assets/img/camisa.png"
+	},
+	{
+		"id": 4,
+		"nombre": "zapatilla",
+		"img": "./assets/img/zapatilla.png"
+	},
+	{
+		"id": 5,
+		"nombre": "chomba",
+		"img": "./assets/img/chomba.png"
+	},
+	{
+		"id": 6,
+		"nombre": "campera",
+		"img": "./assets/img/campera.png"
+	},
+	{
+		"id": 7,
+		"nombre": "default",
+		"img": "./assets/img/default.png"
+	}
+]

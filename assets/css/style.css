@@ -329,6 +329,12 @@ body {
   color: rgba(0, 0, 0, 0.747);
 }
 
+.cardimg img {
+  object-fit: contain;
+  width: 150px;
+  height: auto;
+}
+
 .disabled {
   color: rgb(124, 124, 124);
 }

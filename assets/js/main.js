@@ -77,14 +77,12 @@ function validarMargen(margenSobrePv) {
   return (isNaN(margenSobrePv) || margenSobrePv < 1 || margenSobrePv > 99)
 }
 // Funcion para crear y agregar cards
-function crearCard(producto) {
+function crearCard(producto, imgagenSrc) {
   const wraper = document.getElementById("cardwrap");
-
   const contcard = document.createElement("div");
   contcard.classList.add("customcard2", "cardhover");
-
   contcard.innerHTML = `<div class="cardimg">
-    <i class="fa-solid fa-shirt"></i>
+  <img src="${imgagenSrc}" alt="remera">
   </div>
   <div class="card-filter"></div>
   <div class="cont-cardtxt minheight">
@@ -139,13 +137,11 @@ function guardarEnLocalStorage(nombreProducto, costU, formulaPv, unidadesProduci
     }
     datosGuardados.push(nuevoproducto);
     localStorage.setItem("datos", JSON.stringify(datosGuardados));
-
     mostrarNotificacion('Bien!', `El producto ${nuevoproducto.Nombre} se agregó correctamente.`, 'success', 'cbut');
     for (let i = 0; i <= 2; i++) {
       const inputElement = document.getElementById(`input${i}`);
       inputElement.value = ''
     }
-
   } else {
     mostrarNotificacion('Error', `El producto ${nombreProducto} ya existe.`, 'error', 'cbut');
   }
@@ -160,12 +156,9 @@ function guardarDatostotEnLs(unidadestot, costomp, costomod, costofijo) {
     costomodt: costomod,
     costofijot: costofijo
   }
-
   datosGuardadosTot.push(datosInputs);
   localStorage.setItem("datostot", JSON.stringify(datosGuardadosTot));
-
   mostrarNotificacion('Bien!', `Los datos totales fueron guardados correctamente`, 'success', 'cbut');
-
   for (let i = 3; i <= 6; i++) {
     const inputElement = document.getElementById(`input${i}`);
     inputElement.disabled = true;
@@ -176,7 +169,6 @@ function guardarDatostotEnLs(unidadestot, costomp, costomod, costofijo) {
 
 function mostrarDatosTot() {
   const datosGuardadosTot = JSON.parse(localStorage.getItem("datostot")) || [];
-
   // Creo un objeto para asociar id de input con la propiedad del objeto datosGuardadosTot
   const asocioIdyProp = {
     input3: "unidadestot",
@@ -184,7 +176,6 @@ function mostrarDatosTot() {
     input5: "costomodt",
     input6: "costofijot"
   };
-
   flag = false
   // Verifico si hay datos en el localstorage
   if (datosGuardadosTot.length > 0) {
@@ -202,9 +193,7 @@ function mostrarDatosTot() {
       inputElement.disabled = true;
       inputElement.classList.add('disabled');
     }
-
   }
-
 }
 // Funcion que valida y guarda los datos cargados totales en el localstorage
 function cargaDatosInic(e) {
@@ -229,8 +218,8 @@ function cargaDatosInic(e) {
 }
 // Funcion que valida y realiza los calculos correspondientes, guarda todos los datos especificados para las cards en LS con la funcion guardarEnLocalStorage();
 function validaryGuardar(e) {
-  const datosGuardadosTot = JSON.parse(localStorage.getItem("datostot")) || [];
   e.preventDefault();
+  const datosGuardadosTot = JSON.parse(localStorage.getItem("datostot")) || [];
   // Verifico si los datos totales fueron cargados primero
   if (!flag) {
     mostrarNotificacion("Error", "Cargue primero datos totales", "error", 'cbut');
@@ -242,7 +231,7 @@ function validaryGuardar(e) {
   const margenSobrePv = parseFloat(document.getElementById("input2").value);
   // Valido datos y realizo los calculos, los guardo en LS con la funcion guardarEnLocalStorage()
   if (validarNombreProducto(nombreProducto) || validarValoresNumericos(unidadesProducidas) || validarMargen(margenSobrePv)) {
-    mostrarNotificacion("Error", "Ingrese un nombre válido y/o valores entre 1 y 99", "error", 'cbut');
+    mostrarNotificacion("Error", "Ingrese datos validos y entre 1 y 99 para Margen", "error", 'cbut');
   }
   else {
     const data = datosGuardadosTot[0]
@@ -258,7 +247,6 @@ function validaryGuardar(e) {
   }
 }
 
-
 // Funcion para crear y mostrar cards con datos de localstorage
 function mostrarCardsLs() {
   const datosGuardados = JSON.parse(localStorage.getItem("datos")) || [];
@@ -266,22 +254,17 @@ function mostrarCardsLs() {
   limpiarCards();
   // Luego genero una card por cada elemento guardado en el localstorage
   datosGuardados.forEach((producto) => {
-    crearCard(producto);
+    crearCard(producto, "");
   });
+  cargarImagenesAsync(datosGuardados);
 }
 
 // Funciones para borrar los datos de las cards de localstorage
-function borrarDatosCardsLs(e) {
-  e.preventDefault();
-  const datosGuardados = JSON.parse(localStorage.getItem("datos")) || [];
-  if (datosGuardados.length > 0) {
-    localStorage.removeItem("datos");
-    limpiarCards();
+function borrarDatosCardsLs() {
+  localStorage.removeItem("datos");
+  limpiarCards();
+  mostrarNotificacion('Hecho', 'Cards borradas exitosamente', 'success', 'cbut');
 
-    mostrarNotificacion('Hecho', 'Cards borradas exitosamente', 'success', 'cbut');
-  } else {
-    mostrarNotificacion('Error', 'No hay datos locales', 'error', 'cbut');
-  }
 }
 // Funcion para borrar los datos totales de localstorage
 function borrarDatosTotLs() {
@@ -293,16 +276,32 @@ function borrarDatosTotLs() {
     inputElement.value = '';
   }
   flag = false;
+  mostrarNotificacion('Hecho', 'Datos borrados con exito', 'success', 'cbut')
 }
-// Funcion que se ejecuta con un boton, permite la opcion de borrar o cancelar
-function borrarDatosSwal(e) {
-  e.preventDefault();
-  const datosGuardadosTot = JSON.parse(localStorage.getItem("datostot")) || [];
 
-  if (datosGuardadosTot.length > 0) {
+// Agrego eventos a botones
+document.getElementById('guardarBotonInic').addEventListener('click', cargaDatosInic);
+
+document.getElementById("borrarDatosInic").onclick = function (e) {
+  borrarDatosSwal(e, borrarDatosTotLs, 'datostot')
+}
+document.getElementById('guardarBotonCards').onclick = function (e) {
+  validaryGuardar(e);
+  mostrarCardsLs();
+}
+document.getElementById("borrarCards").onclick = function (e) {
+  borrarDatosSwal(e, borrarDatosCardsLs, 'datos')
+}
+
+// Funcion para borrar datos con notificacion SweetAlert
+function borrarDatosSwal(event, funcion, objname) {
+  event.preventDefault();
+  const datosGuardadosLS = JSON.parse(localStorage.getItem(objname)) || [];
+
+  if (datosGuardadosLS.length > 0) {
     Swal.fire({
       title: 'Borrar todos los datos?',
-      text: "Tendras que cargar nuevos datos totales",
+      text: 'Tendras que cargar nuevos datos y se perdaran los anteriores',
       icon: 'warning',
       showCancelButton: true,
       buttonsStyling: false,
@@ -313,27 +312,37 @@ function borrarDatosSwal(e) {
       confirmButtonText: 'Si, borrar'
     }).then((result) => {
       if (result.isConfirmed) {
-        borrarDatosTotLs();
-        mostrarNotificacion('Hecho', 'Datos borrados con exito', 'success', 'cbut')
+        funcion();
       }
     });
   } else {
     mostrarNotificacion('Error', 'No hay datos locales', 'error', 'cbut');
   }
 }
+const apiURL = './database.json'
 
+function cargarImagenesAsync(productos) {
+  fetch(apiURL)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Error al cargar base de datos: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      const cards = document.querySelectorAll(".customcard2");
+      productos.forEach((producto, index) => {
+        const imagenInfo = data.find((imagenInfo) => imagenInfo.nombre === producto.Nombre);
+        const imagenSrc = imagenInfo ? imagenInfo.img : "./assets/img/default.png";
+        const imgElement = cards[index].querySelector(".cardimg img");
+        imgElement.src = imagenSrc;
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 // Llamo a estas funciones al cargar la página para mostrar las cards y datos existentes
 mostrarDatosTot();
 mostrarCardsLs();
-
-// Agrego un evento click a botones
-document.getElementById('guardarBoton1').addEventListener('click', cargaDatosInic);
-
-document.getElementById('guardarBoton').addEventListener('click', validaryGuardar);
-document.getElementById('guardarBoton').addEventListener('click', mostrarCardsLs);
-
-document.getElementById("borrarCards").addEventListener("click", borrarDatosCardsLs);
-document.getElementById('borrardatos').addEventListener('click', borrarDatosSwal);
-
-//TODO - SOLO FALTA AGREGAR UNA PETICION FETCH SIMULANDO UNA BASE DE DATOS 
 
