@@ -82,7 +82,7 @@ function crearCard(producto, imgagenSrc) {
   const contcard = document.createElement("div");
   contcard.classList.add("customcard2", "cardhover");
   contcard.innerHTML = `<div class="cardimg">
-  <img src="${imgagenSrc}" alt="remera">
+  <img src="${imgagenSrc}" alt="${producto.Nombre}">
   </div>
   <div class="card-filter"></div>
   <div class="cont-cardtxt minheight">
@@ -332,7 +332,7 @@ function cargarImagenesAsync(productos) {
     .then((data) => {
       const cards = document.querySelectorAll(".customcard2");
       productos.forEach((producto, index) => {
-        const imagenInfo = data.find((imagenInfo) => imagenInfo.nombre === producto.Nombre);
+        const imagenInfo = data.find((imagenInfo) => imagenInfo.nombre.includes(producto.Nombre));
         const imagenSrc = imagenInfo ? imagenInfo.img : "./assets/img/default.png";
         const imgElement = cards[index].querySelector(".cardimg img");
         imgElement.src = imagenSrc;
