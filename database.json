@@ -1,7 +1,7 @@
 [
 	{
 		"id": 1,
-		"nombre": "pantalon",
+		"nombre": "pantalon, jean",
 		"img": "./assets/img/pantalon.png"
 	},
 	{
@@ -16,7 +16,7 @@
 	},
 	{
 		"id": 4,
-		"nombre": "zapatilla",
+		"nombre": "zapatilla, zapas",
 		"img": "./assets/img/zapatilla.png"
 	},
 	{
@@ -26,7 +26,7 @@
 	},
 	{
 		"id": 6,
-		"nombre": "campera",
+		"nombre": "saco, campera",
 		"img": "./assets/img/campera.png"
 	},
 	{

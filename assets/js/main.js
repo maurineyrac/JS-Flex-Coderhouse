@@ -76,6 +76,7 @@ function validarValoresNumericos(...valores) {
 function validarMargen(margenSobrePv) {
   return (isNaN(margenSobrePv) || margenSobrePv < 1 || margenSobrePv > 99)
 }
+
 // Funcion para crear y agregar cards
 function crearCard(producto, imgagenSrc) {
   const wraper = document.getElementById("cardwrap");
@@ -319,9 +320,29 @@ function borrarDatosSwal(event, funcion, objname) {
     mostrarNotificacion('Error', 'No hay datos locales', 'error', 'cbut');
   }
 }
+// Simulacion de API url
 const apiURL = './database.json'
 
 function cargarImagenesAsync(productos) {
+
+  const cards = document.querySelectorAll(".customcard2");
+
+  imgdefault(productos, cards)
+
+  getAPI(apiURL, productos, cards)
+}
+// Llamo a estas funciones al cargar la página para mostrar las cards y datos existentes
+mostrarDatosTot();
+mostrarCardsLs();
+// Funcion para asignar una imagen local en caso de que la API esta caida
+function imgdefault(prods, cards) {
+  for (let i = 0; i < prods.length; i++) {
+    const elemento = cards[i].querySelector(".cardimg img")
+    elemento.src = "./assets/img/default.png"
+  }
+}
+// Funcion para realizar fetch
+function getAPI(apiURL, productos, cards) {
   fetch(apiURL)
     .then((response) => {
       if (!response.ok) {
@@ -330,9 +351,9 @@ function cargarImagenesAsync(productos) {
       return response.json();
     })
     .then((data) => {
-      const cards = document.querySelectorAll(".customcard2");
       productos.forEach((producto, index) => {
         const imagenInfo = data.find((imagenInfo) => imagenInfo.nombre.includes(producto.Nombre));
+        console.log(imagenInfo)
         const imagenSrc = imagenInfo ? imagenInfo.img : "./assets/img/default.png";
         const imgElement = cards[index].querySelector(".cardimg img");
         imgElement.src = imagenSrc;
@@ -342,7 +363,3 @@ function cargarImagenesAsync(productos) {
       console.error(error);
     });
 }
-// Llamo a estas funciones al cargar la página para mostrar las cards y datos existentes
-mostrarDatosTot();
-mostrarCardsLs();
-
